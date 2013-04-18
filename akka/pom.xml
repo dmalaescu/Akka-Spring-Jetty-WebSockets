@@ -24,5 +24,6 @@
 
     <properties>
         <akka.version>2.0</akka.version>
+        <ya.version>2.0</ya.version>
     </properties>
 </project>
