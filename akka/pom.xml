@@ -12,4 +12,17 @@
     <artifactId>akka</artifactId>
     <packaging>jar</packaging>
     <version>0.0.1</version>
+
+    <!-- Akka -->
+    <dependencies>
+        <dependency>
+            <groupId>com.typesafe.akka</groupId>
+            <artifactId>akka-actor</artifactId>
+            <version>${akka.version}</version>
+        </dependency>
+    </dependencies>
+
+    <properties>
+        <akka.version>2.0</akka.version>
+    </properties>
 </project>
