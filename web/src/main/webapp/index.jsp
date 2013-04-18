@@ -1,5 +1,8 @@
 <!DOCTYPE html>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%
 
+%>
 <html>
     <meta charset="utf-8">
     <title>Akka-Spring</title>
@@ -7,52 +10,84 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <link href="/css/bootstrap.css" rel="stylesheet">
-    <link href="/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="<c:url value="/css/bootstrap.css"/>" rel="stylesheet">
+    <link href="<c:url value="/css/bootstrap-responsive.css"/>" rel="stylesheet">
+    <head>
+        <script type="text/javascript">
+            if (!window.WebSocket){
+                alert("WebSockets are not supported within this browser");
+            }
+            var ws = new WebSocket("ws://localhost:8080/Akka-Spring/ws/websocket");
+            ws.onopen = function() {
+                alert("Websocket connected");
+                ws.send("Websocket is open");
+            };
+            ws.onclose = function() {
+                alert("socket is cloesed");
+                ws = null;
+            }
+            ws.onmessage = function(message) {
+                $("#wsInfo").append(message.data);
+            }
 
+        </script>
+    </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="navbar-inner">
-            <div class="container">
-                <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="brand" href="#">Project name</a>
-                <div class="nav-collapse collapse">
-                    <ul class="nav">
-                        <li class="active"><a href="#">Home</a></li>
-                        <li><a href="#about">About</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                    </ul>
-                </div><!--/.nav-collapse -->
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span3">
+                <button class="btn btn-large btn-primary" type="button">Fetch</button>
+                <textarea rows="3" id="wsInfo"></textarea>
+            </div>
+            <div class="span9">
+                <div class="row-fluid" id="c1">
+                    <div class="span3">
+                        Container
+                    </div>
+                    <div class="span3" id="c2">
+                        Container
+                    </div>
+                    <div class="span3" id="c3">
+                        Container
+                    </div>
+                    <div class="span3" id="c4">
+                        Container
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="span3" id="c5">
+                        Container
+                    </div>
+                    <div class="span3" id="c6">
+                        Container
+                    </div>
+                    <div class="span3" id="c7">
+                        Container
+                    </div>
+                    <div class="span3" id="c8">
+                        Container
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-
-    <div class="container">
-
-        <h1>Bootstrap starter template</h1>
-        <p>Use this document as a way to quick start any new project.<br> All you get is this message and a barebones HTML document.</p>
 
     </div> <!-- /container -->
 
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="../assets/js/jquery.js"></script>
-    <script src="../assets/js/bootstrap-transition.js"></script>
-    <script src="../assets/js/bootstrap-alert.js"></script>
-    <script src="../assets/js/bootstrap-modal.js"></script>
-    <script src="../assets/js/bootstrap-dropdown.js"></script>
-    <script src="../assets/js/bootstrap-scrollspy.js"></script>
-    <script src="../assets/js/bootstrap-tab.js"></script>
-    <script src="../assets/js/bootstrap-tooltip.js"></script>
-    <script src="../assets/js/bootstrap-popover.js"></script>
-    <script src="../assets/js/bootstrap-button.js"></script>
-    <script src="../assets/js/bootstrap-collapse.js"></script>
-    <script src="../assets/js/bootstrap-carousel.js"></script>
-    <script src="../assets/js/bootstrap-typeahead.js"></script>
+    <script src="<c:url value="/js/jquery.js"/>"></script>
+    <script src="<c:url value="/js/bootstrap-transition.js"/>"></script>
+    <script src="<c:url value="/js/bootstrap-alert.js"/>"></script>
+    <script src="<c:url value="/js/bootstrap-modal.js"/>"></script>
+    <script src="<c:url value="/js/bootstrap-dropdown.js"/>"></script>
+    <script src="<c:url value="/js/bootstrap-scrollspy.js"/>"></script>
+    <script src="<c:url value="/js/bootstrap-tab.js"/>"></script>
+    <script src="<c:url value="/js/bootstrap-tooltip.js"/>"></script>
+    <script src="<c:url value="/js/bootstrap-popover.js"/>"></script>
+    <script src="<c:url value="/js/bootstrap-button.js"/>"></script>
+    <script src="<c:url value="/js/bootstrap-collapse.js"/>"></script>
+    <script src="<c:url value="/js/bootstrap-carousel.js"/>"></script>
+    <script src="<c:url value="/js/bootstrap-typeahead.js"/>"></script>
 </body>
 </html>
