@@ -1,4 +1,4 @@
-package com.examples;
+package com.examples.web.config;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
@@ -14,28 +14,33 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.stereotype.Component;
 
 /**
  * Created with IntelliJ IDEA.
  * User: mala
  */
 @Configuration
-@ComponentScan("com.example")
+@ComponentScan(basePackageClasses = {DummyServiceImpl.class})
 public class Bootstrap {
+
+    public Bootstrap(){
+    }
+
     @Autowired
     ApplicationContext applicationContext;
 
-    @Bean
+    @Bean(name = "dummyService")
     public DummyService dummyService(){
         return new DummyServiceImpl();
     }
 
     @Bean(name = "actorSystem")
     public ActorSystem actorSystem(){
-        return ActorSystem.create("spring-akka-websockets");
+        return ActorSystem.create("Spring_Akka_Websockets");
     }
 
-    @Bean
+    @Bean(name = "imageMaster")
     @DependsOn("actorSystem")
     public ActorRef imageMaster(){
         return actorSystem().actorOf(
@@ -43,7 +48,7 @@ public class Bootstrap {
         );
     }
 
-    @Bean
+    @Bean(name = "imageWorker")
     @DependsOn("actorSystem")
     public ActorRef imageWorker(){
         return actorSystem().actorOf(

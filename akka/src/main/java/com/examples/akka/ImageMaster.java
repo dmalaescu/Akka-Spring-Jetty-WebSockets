@@ -6,6 +6,7 @@ import akka.actor.UntypedActor;
  * Created with IntelliJ IDEA.
  * User: mala
  */
+
 public class ImageMaster extends UntypedActor{
 
     /**
@@ -13,5 +14,10 @@ public class ImageMaster extends UntypedActor{
      */
     @Override
     public void onReceive(Object message) throws Exception {
+        if (message instanceof String){
+            getSender().tell(message.toString() + " back");
+        } else {
+            unhandled(message);
+        }
     }
 }
