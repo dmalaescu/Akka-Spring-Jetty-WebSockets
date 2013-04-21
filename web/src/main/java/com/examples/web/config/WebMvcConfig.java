@@ -11,7 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = {"com.examples.web"})
-public class WebConfig extends WebMvcConfigurerAdapter{
+@ComponentScan(basePackages = {"com.examples.web.*"})
+public class WebMvcConfig extends WebMvcConfigurerAdapter{
 
 }

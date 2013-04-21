@@ -21,11 +21,7 @@ import org.springframework.stereotype.Component;
  * User: mala
  */
 @Configuration
-@ComponentScan(basePackageClasses = {DummyServiceImpl.class})
 public class Bootstrap {
-
-    public Bootstrap(){
-    }
 
     @Autowired
     ApplicationContext applicationContext;

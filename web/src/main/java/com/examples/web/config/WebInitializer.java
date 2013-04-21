@@ -19,7 +19,6 @@ public class WebInitializer extends AbstractAnnotationConfigDispatcherServletIni
 
         // add servlet for WebSockets
         ServletRegistration.Dynamic wsRegistration = servletContext.addServlet("WebSocket", DummyWebSocketServlet.class);
-//        wsRegistration.setLoadOnStartup(1);
         wsRegistration.addMapping("/ws/*");
 
     }
@@ -31,7 +30,7 @@ public class WebInitializer extends AbstractAnnotationConfigDispatcherServletIni
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return new Class<?>[] {WebConfig.class};
+        return new Class<?>[] {WebMvcConfig.class};
     }
 
     @Override
