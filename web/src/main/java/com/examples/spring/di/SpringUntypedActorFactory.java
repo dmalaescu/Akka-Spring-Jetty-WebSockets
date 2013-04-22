@@ -4,8 +4,10 @@ import akka.actor.Actor;
 import akka.actor.UntypedActor;
 import akka.actor.UntypedActorFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
 /**
@@ -46,7 +48,12 @@ public class SpringUntypedActorFactory implements UntypedActorFactory{
                         boolean accessible = field.isAccessible();
                         try {
                             field.setAccessible(true);
-                            field.set(untypedActor, applicationContext.getBean(field.getType()));
+                            if (field.getAnnotation(Qualifier.class) != null){
+                                Annotation annotation = field.getAnnotation(Qualifier.class);
+                                field.set(untypedActor, applicationContext.getBean(field.getAnnotation(Qualifier.class).value(), field.getType()));
+                            } else {
+                                field.set(untypedActor, applicationContext.getBean(field.getType()));
+                            }
                         } catch (IllegalAccessException e) {
                             throw new IllegalStateException("Unable to create actor instance", e);
                         }

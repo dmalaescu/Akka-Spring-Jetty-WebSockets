@@ -19,15 +19,18 @@
             }
             var ws = new WebSocket("ws://localhost:8080/Akka-Spring/ws/websocket");
             ws.onopen = function() {
-                alert("Websocket connected");
+                $("#wsInfo").append("Websocket connected!");
                 ws.send("Websocket is open");
             };
             ws.onclose = function() {
-                alert("socket is cloesed");
+                $("#wsInfo").append("Websocket disconnected!");
                 ws = null;
             }
             ws.onmessage = function(message) {
-                $("#wsInfo").append(message.data);
+//                $("#wsInfo").append(message.data);
+//                $("#c1").css("background-image", "url(data:image/jpeg;base64, " + message.data + ")");
+                var random = Math.floor(Math.random() * 8) + 1;
+                $("#img-c" + random).attr("src", "data:image/jpeg;base64, " + message.data);
             }
 
         </script>
@@ -40,32 +43,32 @@
                 <textarea rows="3" id="wsInfo"></textarea>
             </div>
             <div class="span9">
-                <div class="row-fluid" id="c1">
+                <div class="row-fluid">
                     <div class="span3">
-                        Container
+                        <img style="height: 200px; width:200px;" id="img-c1"/>
                     </div>
                     <div class="span3" id="c2">
-                        Container
+                        <img style="height: 200px; width:200px;" id="img-c2"/>
                     </div>
                     <div class="span3" id="c3">
-                        Container
+                        <img style="height: 200px; width:200px;" id="img-c3"/>
                     </div>
                     <div class="span3" id="c4">
-                        Container
+                        <img style="height: 200px; width:200px;" id="img-c4"/>
                     </div>
                 </div>
                 <div class="row-fluid">
                     <div class="span3" id="c5">
-                        Container
+                        <img style="height: 200px; width:200px;" id="img-c5"/>
                     </div>
                     <div class="span3" id="c6">
-                        Container
+                        <img style="height: 200px; width:200px;" id="img-c6"/>
                     </div>
                     <div class="span3" id="c7">
-                        Container
+                        <img style="height: 200px; width:200px;" id="img-c7"/>
                     </div>
                     <div class="span3" id="c8">
-                        Container
+                        <img style="height: 200px; width:200px;" id="img-c8"/>
                     </div>
                 </div>
             </div>

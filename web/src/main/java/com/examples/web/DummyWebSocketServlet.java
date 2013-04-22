@@ -7,25 +7,19 @@ import akka.dispatch.OnSuccess;
 import akka.pattern.Patterns;
 import akka.util.Duration;
 import akka.util.Timeout;
-import com.examples.akka.service.DummyService;
 import org.eclipse.jetty.websocket.WebSocket;
 import org.eclipse.jetty.websocket.WebSocketServlet;
-import org.springframework.beans.factory.annotation.Autowire;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -38,6 +32,12 @@ public class DummyWebSocketServlet extends WebSocketServlet{
     private static final long serialVersionUID = -7289719281366784056L;
     private final Set<DummySocket> _members = new CopyOnWriteArraySet<DummySocket>();
 
+    private static List<String> animals = new ArrayList<String>();
+    static {
+        animals.add("cat");animals.add("zebra");animals.add("rabbit");
+        animals.add("lion");animals.add("fish");animals.add("camel");
+        animals.add("dog");animals.add("tiger");animals.add("elephant");
+    }
     ActorSystem actorSystem;
     ActorRef imageMaster;
 
@@ -56,7 +56,10 @@ public class DummyWebSocketServlet extends WebSocketServlet{
             public void run() {
                 // for each member ask the image master for an image
                 for (final DummySocket member : _members) {
-                    Future<Object> future =  Patterns.ask(imageMaster, "echo", new Timeout(Duration.create(10, TimeUnit.SECONDS)));
+                    // random animal
+                    String animalName = animals.get((new Random()).nextInt(8));
+                    // get an image with that animal
+                    Future<Object> future =  Patterns.ask(imageMaster, animalName, new Timeout(Duration.create(10, TimeUnit.SECONDS)));
                     future.onSuccess(new OnSuccess<Object>() {
                         /**
                          * This method will be invoked once when/if a Future that this callback is registered on
@@ -66,7 +69,7 @@ public class DummyWebSocketServlet extends WebSocketServlet{
                         public void onSuccess(Object result) {
                             if (member.isOpen()){
                                 try{
-                                    member.sendMessage(result.toString());
+                                    if (result != null) member.sendMessage(result.toString());
                                 }catch (Exception e){
                                     e.printStackTrace();
                                 }
