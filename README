@@ -1,12 +1,19 @@
+Project:
 Akka-Spring-Jetty-Websockets
 
-Spring Application that uses actor and websockets for building
+Short description:
+Spring Application that uses actor and web sockets for building
 a push system in scope of sending data to web clients
 
-Used:
--Spring 3.2.2.REALEASE
--Akka actor 2.0
--Jetty Websockets 8.1.8.v20121106
+Main technologies used:
+    -Spring 3.2.2.REALEASE (no *.xml)
+    -Akka actor 2.0 (for a messaging system)
+    -Jetty Websockets 8.1.8.v20121106(for push data)
+    -Servlet 3.0 (no web.xml)
+    -Jetty container
 
+Run the project:
+    mvn jetty:run
 
-http://192.168.56.1:8080/Akka-Spring/index.jsp
+Access the application:
+    http://localhost:8080/Akka-Spring/index.jsp
