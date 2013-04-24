@@ -13,6 +13,7 @@ Main technologies used:
     -Jetty container
 
 Run the project:
+    mvn install(within main pom.xml)
     cd web/
     mvn jetty:run (within web/pom.xml)
 
