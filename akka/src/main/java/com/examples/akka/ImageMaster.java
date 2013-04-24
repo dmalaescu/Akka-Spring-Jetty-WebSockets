@@ -23,8 +23,6 @@ public class ImageMaster extends UntypedActor{
     /**
      * To be implemented by concrete UntypedActor. Defines the message handler.
      */
-
-
     @Autowired
     @Qualifier("imageWorker")
     ActorRef imageWorker;
