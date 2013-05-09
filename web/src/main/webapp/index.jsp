@@ -27,8 +27,6 @@
                 ws = null;
             }
             ws.onmessage = function(message) {
-//                $("#wsInfo").append(message.data);
-//                $("#c1").css("background-image", "url(data:image/jpeg;base64, " + message.data + ")");
                 var random = Math.floor(Math.random() * 8) + 1;
                 $("#img-c" + random).attr("src", "data:image/jpeg;base64, " + message.data);
             }
