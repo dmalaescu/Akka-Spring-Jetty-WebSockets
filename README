@@ -13,9 +13,9 @@ Main technologies used:
     -Jetty container
 
 Run the project:
-    mvn install(within main pom.xml)
+    mvn install(within main pom.xml for building the application)
     cd web/
-    mvn jetty:run (within web/pom.xml)
+    mvn jetty:run (within web/pom.xml for running in jetty container)
 
 Access the application:
     http://localhost:8080/Akka-Spring/index.jsp with a browser that supports WebSockets
