@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit;
 public class DummyWebSocketServlet extends WebSocketServlet{
 
     private static final long serialVersionUID = -7289719281366784056L;
-    private final Set<DummySocket> _members = new CopyOnWriteArraySet<DummySocket>();
+    private final Set<DummySocket> members = new CopyOnWriteArraySet<DummySocket>();
 
     private static List<String> animals = new ArrayList<String>();
     static {
@@ -55,7 +55,7 @@ public class DummyWebSocketServlet extends WebSocketServlet{
             @Override
             public void run() {
                 // for each member ask the image master for an image
-                for (final DummySocket member : _members) {
+                for (final DummySocket member : members) {
                     // random animal
                     String animalName = animals.get((new Random()).nextInt(8));
                     // get an image with that animal
@@ -88,26 +88,26 @@ public class DummyWebSocketServlet extends WebSocketServlet{
     }
 
     class DummySocket implements WebSocket.OnTextMessage, WebSocket.OnBinaryMessage {
-        private Connection _connection;
+        private Connection connection;
         @Override
         public void onClose(int closeCode, String message) {
-            _members.remove(this);
+            members.remove(this);
         }
         public void sendMessage(String data) throws IOException {
-            _connection.sendMessage(data);
+            connection.sendMessage(data);
         }
         @Override
         public void onMessage(String data) {
             System.out.println("Received: "+data);
         }
         public boolean isOpen() {
-            return _connection.isOpen();
+            return connection.isOpen();
         }
 
         @Override
         public void onOpen(Connection connection) {
-            _members.add(this);
-            _connection = connection;
+            members.add(this);
+            this.connection = connection;
             try {
                 connection.sendMessage("Server received Web Socket upgrade and added it to Receiver List.");
             } catch (IOException e) {
@@ -118,7 +118,7 @@ public class DummyWebSocketServlet extends WebSocketServlet{
         @Override
         public void onMessage(byte[] data, int offset, int length) {
             try {
-                _connection.sendMessage(data, offset, length);
+                connection.sendMessage(data, offset, length);
             } catch (IOException e) {
                 e.printStackTrace();
             }
