@@ -3,10 +3,12 @@ package com.examples.web;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.dispatch.Future;
+import akka.dispatch.Mapper;
 import akka.dispatch.OnSuccess;
 import akka.pattern.Patterns;
 import akka.util.Duration;
 import akka.util.Timeout;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.eclipse.jetty.websocket.WebSocket;
 import org.eclipse.jetty.websocket.WebSocketServlet;
 import org.springframework.stereotype.Component;
@@ -40,6 +42,7 @@ public class DummyWebSocketServlet extends WebSocketServlet{
     }
     ActorSystem actorSystem;
     ActorRef imageMaster;
+    ObjectMapper mapper = new ObjectMapper();
 
 
     @Override
@@ -59,8 +62,8 @@ public class DummyWebSocketServlet extends WebSocketServlet{
                     // random animal
                     String animalName = animals.get((new Random()).nextInt(8));
                     // get an image with that animal
-                    Future<Object> future =  Patterns.ask(imageMaster, animalName, new Timeout(Duration.create(10, TimeUnit.SECONDS)));
-                    future.onSuccess(new OnSuccess<Object>() {
+                    Future<Object> imageFuture =  Patterns.ask(imageMaster, animalName, new Timeout(Duration.create(10, TimeUnit.SECONDS)));
+                    imageFuture.onSuccess(new OnSuccess<Object>() {
                         /**
                          * This method will be invoked once when/if a Future that this callback is registered on
                          * becomes successfully completed
@@ -69,13 +72,20 @@ public class DummyWebSocketServlet extends WebSocketServlet{
                         public void onSuccess(Object result) {
                             if (member.isOpen()){
                                 try{
-                                    if (result != null) member.sendMessage(result.toString());
+                                    if (result != null) member.sendMessage(mapper.writeValueAsString(result));
                                 }catch (Exception e){
                                     e.printStackTrace();
                                 }
                             }
                         }
                     });
+
+//                    imageFuture.flatMap(new Mapper<Object, Future<? extends Object>>() {
+//                        @Override
+//                        public Future<? extends Object> apply(Object v1) {
+//                            return null;  //To change body of implemented methods use File | Settings | File Templates.
+//                        }
+//                    })
                 }
             }
         });

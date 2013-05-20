@@ -27,8 +27,12 @@
                 ws = null;
             }
             ws.onmessage = function(message) {
-                var random = Math.floor(Math.random() * 8) + 1;
-                $("#img-c" + random).attr("src", "data:image/jpeg;base64, " + message.data);
+                var appMessage = JSON.parse(message.data);
+
+                if(appMessage.type == "IMAGE"){
+                    var random = Math.floor(Math.random() * 8) + 1;
+                    $("#img-c" + random).attr("src", "data:image/jpeg;base64, " + appMessage.data);
+                }
             }
 
         </script>
