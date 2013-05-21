@@ -80,12 +80,28 @@ public class DummyWebSocketServlet extends WebSocketServlet{
                         }
                     });
 
-//                    imageFuture.flatMap(new Mapper<Object, Future<? extends Object>>() {
-//                        @Override
-//                        public Future<? extends Object> apply(Object v1) {
-//                            return null;  //To change body of implemented methods use File | Settings | File Templates.
-//                        }
-//                    })
+                    Future<Object> aggregateFuture = imageFuture.flatMap(new Mapper<Object, Future<Object>>() {
+                        @Override
+                        public Future<Object> apply(Object v1) {
+                            return Patterns.ask(imageMaster, "aggregate", new Timeout(Duration.create(10, TimeUnit.SECONDS)));
+                        }
+                    });
+                    aggregateFuture.onSuccess(new OnSuccess<Object>() {
+                        /**
+                         * This method will be invoked once when/if a Future that this callback is registered on
+                         * becomes successfully completed
+                         */
+                        @Override
+                        public void onSuccess(Object result) {
+                            if (member.isOpen()){
+                                try{
+                                    if (result != null) member.sendMessage(mapper.writeValueAsString(result));
+                                }catch (Exception e){
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    });
                 }
             }
         });

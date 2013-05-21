@@ -12,8 +12,46 @@
 
     <link href="<c:url value="/css/bootstrap.css"/>" rel="stylesheet">
     <link href="<c:url value="/css/bootstrap-responsive.css"/>" rel="stylesheet">
+
     <head>
+        <script src="<c:url value="/js/jquery.js"/>"></script>
+        <script src="<c:url value="/js/bootstrap-transition.js"/>"></script>
+        <script src="<c:url value="/js/bootstrap-transition.js"/>"></script>
+        <script src="<c:url value="/js/bootstrap-alert.js"/>"></script>
+        <script src="<c:url value="/js/bootstrap-modal.js"/>"></script>
+        <script src="<c:url value="/js/bootstrap-dropdown.js"/>"></script>
+        <script src="<c:url value="/js/bootstrap-scrollspy.js"/>"></script>
+        <script src="<c:url value="/js/bootstrap-tab.js"/>"></script>
+        <script src="<c:url value="/js/bootstrap-tooltip.js"/>"></script>
+        <script src="<c:url value="/js/bootstrap-popover.js"/>"></script>
+        <script src="<c:url value="/js/bootstrap-button.js"/>"></script>
+        <script src="<c:url value="/js/bootstrap-collapse.js"/>"></script>
+        <script src="<c:url value="/js/bootstrap-carousel.js"/>"></script>
+        <script src="<c:url value="/js/bootstrap-typeahead.js"/>"></script>
+        <script src="<c:url value="/scripts/d3/d3.js"/>"></script>
+        <script src="<c:url value="/scripts/d3/d3.layout.cloud.js"/>"></script>
         <script type="text/javascript">
+            var fill = d3.scale.category20();
+
+            function draw(words) {
+                d3.select("#aggregate-word-cloud").append("svg")
+                        .attr("width", 300)
+                        .attr("height", 300)
+                        .append("g")
+                        .attr("transform", "translate(150,150)")
+                        .selectAll("text")
+                        .data(words)
+                        .enter().append("text")
+                        .style("font-size", function(d) { return d.size + "px"; })
+                        .style("font-family", "Impact")
+                        .style("fill", function(d, i) { return fill(i); })
+                        .attr("text-anchor", "middle")
+                        .attr("transform", function(d) {
+                            return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+                        })
+                        .text(function(d) { return d.text; });
+            }
+
             if (!window.WebSocket){
                 alert("WebSockets are not supported within this browser");
             }
@@ -32,12 +70,34 @@
                 if(appMessage.type == "IMAGE"){
                     var random = Math.floor(Math.random() * 8) + 1;
                     $("#img-c" + random).attr("src", "data:image/jpeg;base64, " + appMessage.data);
+                }else if (appMessage.type == "AGGREGATE"){
+                    $("#aggregate-word-cloud").html("");
+                    var keys = [];
+                    var total = 0;
+                    for (var key in appMessage.data){
+                        keys.push(key);
+                        total = total + appMessage.data[key];
+                    }
+
+                    d3.layout.cloud().size([300, 300])
+                            .words(keys.map(function(d) {
+                                        return {text: d, size: (appMessage.data[d]/total) * 300};
+                                    }))
+                            .rotate(function() { return ~~(Math.random() * 2) * 90; })
+                            .font("Impact")
+                            .fontSize(function(d) { return d.size; })
+                            .on("end", draw)
+                            .start();
+
+
                 }
             }
-
         </script>
     </head>
 <body>
+<script>
+
+</script>
     <div class="container-fluid">
         <div class="row-fluid">
             <div class="span3">
@@ -45,6 +105,8 @@
                 <textarea rows="3" id="wsInfo"></textarea>
             </div>
             <div class="span9">
+                <div class="row-fluid" id="aggregate-word-cloud">
+                </div>
                 <div class="row-fluid">
                     <div class="span3">
                         <img style="height: 200px; width:200px;" id="img-c1"/>
@@ -81,18 +143,7 @@
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="<c:url value="/js/jquery.js"/>"></script>
-    <script src="<c:url value="/js/bootstrap-transition.js"/>"></script>
-    <script src="<c:url value="/js/bootstrap-alert.js"/>"></script>
-    <script src="<c:url value="/js/bootstrap-modal.js"/>"></script>
-    <script src="<c:url value="/js/bootstrap-dropdown.js"/>"></script>
-    <script src="<c:url value="/js/bootstrap-scrollspy.js"/>"></script>
-    <script src="<c:url value="/js/bootstrap-tab.js"/>"></script>
-    <script src="<c:url value="/js/bootstrap-tooltip.js"/>"></script>
-    <script src="<c:url value="/js/bootstrap-popover.js"/>"></script>
-    <script src="<c:url value="/js/bootstrap-button.js"/>"></script>
-    <script src="<c:url value="/js/bootstrap-collapse.js"/>"></script>
-    <script src="<c:url value="/js/bootstrap-carousel.js"/>"></script>
-    <script src="<c:url value="/js/bootstrap-typeahead.js"/>"></script>
+
+
 </body>
 </html>
