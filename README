@@ -6,10 +6,10 @@ Spring Application that uses actor and web sockets for building
 a push system in scope of sending data to web clients
 
 Main technologies used:
-    -Spring 3.2.2.REALEASE (no *.xml for configuring spring beans)
+    -Spring 3.2.2.REALEASE (no *.xml for configuring spring beans, use annotations instead)
     -Akka actor 2.0 (for an asynchronous actor based messaging system)
     -Jetty Websockets 8.1.8.v20121106(for pushing data to web clients)
-    -Servlet 3.0 (no web.xml for servlet config)
+    -Servlet 3.0 (no web.xml for servlet config, use programmatic approach instead)
     -Jetty container(easy run the application)
 
 Run the project:
